@@ -1,0 +1,246 @@
+<p>&nbsp;</p>
+<p style="text-align: center;"><span style="text-decoration: underline; font-size: large;"><strong>100 Istio Interview Questions</strong></span></p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;"><span style="font-size: medium;"><strong>By Mamun Rashid</strong></span></p>
+<p style="text-align: center;"><span style="font-size: medium;"><strong>Linkedin: https://www.linkedin.com/in/mamunrashid/</strong></span></p>
+<p style="text-align: center;"><span style="font-size: medium;"><strong>Last Updated: 02.22.2021</strong></span></p>
+<p><br /><span style="font-size: small;"><strong>1. Why do we need Istio for time-outs, retries and circuit-breakers?</strong></span></p>
+<p>Answer: Without Istio (or some other service-mesh solution) , we would have to code these things in EVERY micro-service. If we have 200 micro-services, we would have to make sure that every single micro-service has these built-in.</p>
+<p><br /><span style="font-size: small;"><strong>2. Scenario Question: You have version 0.1 and 0.2 of an app running as two different Kubernetes Servcies. In Istio, what do you have to do, to send 90% of the traffic to version 0.1 and 10% to version 0.2 (Basically a Canary set up)?</strong></span></p>
+<p>Answer: Define a VirtualService that has 2 destination rules. In the YAML, you can specify what percentage of traffic goes where.</p>
+<p><br /><span style="font-size: small;"><strong>3. Why do you need an Istio Gateway, when kubernetes already has an Ingress Gateway?</strong></span></p>
+<p>Answer: Let us get some background first. The envoy proxies only come into play when containers talk to other containers in the cluster. That is when all our Istio configs (e.g. splitting traffic between services) come into effect. However, that is NOT the case, when you have a front-end application on your cluster, because the incoming traffic is from OUTSIDE the cluster. In this case, we need an Ingress Gateway on the "edge" (i.e. "front gate"). That is exactly what Istio Ingress Gateway is. This "Istio Ingress <br /> Gateway" has the ability to split incoming traffic and send them to different services at any chosen ratio.</p>
+<p><br /><span style="font-size: small;"><strong>4. Scenario: You need to route traffic based on some criteria. For example, if the sender has a cookie set, send traffic to destination A. Or, if the URI has certain prefix, send traffic to destionation B. How do you accomplish this in Isto?</strong></span></p>
+<p>Answer: Define a Gateway that TWO "match" sections. Each "match" section would implement a criteria-&gt; destination.</p>
+<p><br /><span style="font-size: small;"><strong>5. Scenario: For the example criteria match (e.g. incoming traffic URI has a particular prefix), you want to SPLIT the traffic to TWO different destinations. How do you implement this scenario in Istio?</strong></span></p>
+<p>Answer: Make a Gateway. In the YAML definition of the Gateway, define a criteria in the "match" section. THEN, in the "route" section for that match, simply define two different destinations (e.g. host)</p>
+<p><br /><span style="font-size: small;"><strong>6. Scenario: You have a monolith. You want to chip away at this monolith slowly. You define a microservice A that handles a small part of monolithic service, while letting REST of monolith be as is. How can Istio help you in this situation?</strong></span></p>
+<p>Answer:</p>
+<p>1. Define ONE big VirtualService that points to the monolith.<br /> 2. Create a microservice (a service in Kubernetes) that handles a small part of the monolith<br /> 3. Now, edit the VirtualService to add the new microservice that handles the relevant requests (e.g. a REST path) <br /> 4. Now, users still hit same the VirtualService and yet , behind the scene, Istio forwards ONLY the relevant requests to the brand new micro-service.<br /> 5. You can continue steps 2-4 for each small piece that you chip away from the monolith until the entire monolith has been converted to N micro-services.</p>
+<p><br /><span style="font-size: small;"><strong>7. The "hosts" field in the definitions of VirtualService and Gateway is very powerful. Why?</strong></span></p>
+<p>Answer: It represents the client's destionation. However, Istio allows this to take many forms, such as:<br /> <br /> - short form of Kubernetes Service Name<br /> - IP<br /> - FQDN<br /> - * wildcard<br /> and many more.</p>
+<p><br /><span style="font-size: small;"><strong>8. How does Istio help with security?</strong></span></p>
+<p>Answer: Istio can encrypt microservice to microservice traffic very easily</p>
+<p><br /><span style="font-size: small;"><strong>9. What core "thing" makes Istio possible?</strong></span></p>
+<p>Answer: It puts an envoy proxy in each pod. This makees everything else in Istio possible.</p>
+<p><br /><span style="font-size: small;"><strong>10. Can you name some of the add-ons for Istio?</strong></span></p>
+<p>Answer: Kiali, jaeger, Grafana, Prometheus, Zipkin, Cert-Manager</p>
+<p><br /><span style="font-size: small;"><strong>11. Can you think of a tool that helps us automate canary deployments on Kubernetes via Istio?</strong></span></p>
+<p>Answer: Falgger (open-source)</p>
+<p><br /><span style="font-size: small;"><strong>12. How do you access kiali, once instaleled?</strong></span></p>
+<p>Answer: Just port forward to kali pod 20001</p>
+<p><br /><span style="font-size: small;"><strong>13. How does Istio does what it does?</strong></span></p>
+<p>Answer: It installs sidecars along with application containers ("envoys") that intercepts and proxys traffic.</p>
+<p><br /><span style="font-size: small;"><strong>14. Is there such a thing as "Istio Ingress Controller"</strong></span></p>
+<p>Answer: Yes. Istio supports standard Kubernetes Ingress specification without annotations</p>
+<p><br /><span style="font-size: small;"><strong>15. What does Istio install automatically in each pod ?</strong></span></p>
+<p>Answer: Envoy</p>
+<p><br /><span style="font-size: small;"><strong>16. Can Istio do API Management at the edge?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>17. What is Istio routing?</strong></span></p>
+<p>Answer: You can use Istio to send 60% traffic to version 1 of a microservice and 40% to version 2.<br /> You can also route traffic based on conditions.</p>
+<p><br /><span style="font-size: small;"><strong>18. In terms of help with Micro-Service development, does Istio support retry?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>19. In terms of help with Micro-Service development, does Istio support time-out?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>20. In terms of help with Micro-Service development, does Istio support circuit-breakers?</strong></span></p>
+<p>Answer: Yes</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>21. Can microservice to microservice communication "leave the building" ?</strong></span></p>
+<p>Answer: Yes. This is why you need encryption between microservices.</p>
+<p><br /><strong><span style="font-size: small;">22. In terms of help with Micro-service development, does Istio support Load Balancing?</span></strong></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>23. In terms of help with Micro-service development, does Istio support Fault Injection for testing?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>24. Does Istio support redirect?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>25. Does Istio support re-write?</strong></span></p>
+<p>Answer: Yes. (re-writes paths on the fly)</p>
+<p><br /><span style="font-size: small;"><strong>26. What is Istio re-write?</strong></span></p>
+<p>Answer: Istio can changes the header of the incoming requests. e.g. /foo/bar/a TO /a</p>
+<p><br /><span style="font-size: small;"><strong>27. Can you name couple of reporting features of Istio?</strong></span></p>
+<p>Answer: 1. Telemetry 2. Distributed Tracing and 3. Logging</p>
+<p><br /><span style="font-size: small;"><strong>28. Does iatio have policy enforcement feature?</strong></span></p>
+<p>Answer: yes</p>
+<p><br /><span style="font-size: small;"><strong>29. Can you do dark releases using Istio (to your PRODUCTION environment)?</strong></span></p>
+<p>Answer: YES!</p>
+<p><br /><span style="font-size: small;"><strong>30. Can you name one way you can deploy dark release into your PRODUCTION Environment using Istio?</strong></span></p>
+<p>Answer:</p>
+<p>Istio can re-direct traffic based on headers. You can have a micro-service (or a new version of it) that responds only when the HEADER is present.<br /> You, as a tester (or an automated testing application) can send a request with the added header and Istio will re-direct those to the new version of the Micro-Service.</p>
+<p><br /><span style="font-size: small;"><strong>31. In Istio, how can you suspend traffic between Micro-Service A and B?</strong></span></p>
+<p>Answer: In Kiali GUI, you can "suspend" traffic between services using mouse-clicks.</p>
+<p><br /><span style="font-size: small;"><strong>32. What is a named subset and how does that fit into the big picture?</strong></span></p>
+<p>Answer: Named subset is an endpoint. Endpoint, for example, can be pods with certain labels.<br /> Destination Rules has Named Subsets. So, in the big picture, Named Subsets are where traffic end up after all said and done.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>33. Name one of the new k8s object that Istio creates:</strong></span></p>
+<p>Answer: virtualservice and destinationrules</p>
+<p><br /><span style="font-size: small;"><strong>34. Which Istio feature allows us to track a single request?</strong></span></p>
+<p>Answer: Distributed Tracing</p>
+<p><br /><span style="font-size: small;"><strong>35. Let's say you have Flagger deploy canary to your environment. But, this is just for demo and there is no traffic coming in. What will Flagger do?</strong></span></p>
+<p>Answer: It will think that Canary Deployment has failed and it will roll back.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>36. Name one distrubuted tracing framework that comes with Istio:</strong></span></p>
+<p>Answer: Jaeger</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>37. In Distribute Tracing ONE Trace has multiple ______________(s):</strong></span></p>
+<p>Answer: span</p>
+<p><br /><span style="font-size: small;"><strong>38. What exactly is a "span" in a Trace?</strong></span></p>
+<p>Answer: If a request hops from point A to B to C to D, AB , BC and CD are Spans.</p>
+<p><br /><span style="font-size: small;"><strong>39. Jaeger is basically what looking for tracable requests ?</strong></span></p>
+<p>Answer: Search Engine</p>
+<p><br /><span style="font-size: small;"><strong>40. Can you name some of the features of Istiod (formerly known as Pilot)?</strong></span></p>
+<p>Answer: Routing + timeout,retries,circuit-breakers,load-balancing,fault-injection</p>
+<p><br /><span style="font-size: small;"><strong>41. What does flagger do?</strong></span></p>
+<p>Answer: promotes canary based on metrics , little by little (10% --&gt; 20% --&gt; etc) and rolls back if metrics don't look good.</p>
+<p><br /><span style="font-size: small;"><strong>42. Can you name another service-mesh besides Istio?</strong></span></p>
+<p>Answer: Linkerd</p>
+<p><br /><span style="font-size: small;"><strong>43. How to install Istio ?</strong></span></p>
+<p>Answer: Version 1.9 (2021) curl down the Istioctl and then use Istioctl to install Istio</p>
+<p><br /><span style="font-size: small;"><strong>44. What manages certificates in Istio?</strong></span></p>
+<p>Answer: CA (Certificate Authority)</p>
+<p><br /><span style="font-size: small;"><strong>45. What is Citadel?</strong></span></p>
+<p>Answer: Old name of CA:</p>
+<p><br /><span style="font-size: small;"><strong>46. Envoy , sidecar proxy, gets its routing and configuration from __________ :</strong></span></p>
+<p>Answer: Pilot/Istiod</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>47. What is this "Mixer" thing in Istio?</strong></span></p>
+<p><br /> Answer:</p>
+<p>source: https://Istio-releases.github.io/v0.1/docs/concepts/policy-and-control/mixer.html</p>
+<p><br /> Mixer provides a generic intermediation layer between application code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having application code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.</p>
+<p><br /><span style="font-size: small;"><strong>48. Which 3 Core Services does MIXER provide?</strong></span></p>
+<p>Answer: Pre-condition Checking, Quota Management, Telemetry Reporting</p>
+<p><br /><span style="font-size: small;"><strong>49. Envoy gets certificates from ________________</strong></span></p>
+<p>Answer: CA (Formerly named Citadel)</p>
+<p><br /><span style="font-size: small;"><strong>50. Does Istio has both ingress and egress controllers?</strong></span></p>
+<p>Answer: True</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>51. How is Istio's VirtualServices different than a normal Kubernetes service:</strong></span></p>
+<p>Answer:</p>
+<p>VirtualService has additional features such as:<br /> a. external route management<br /> b. external traffic management<br /> c. pod to external communication<br /> d. HTTPS external communication<br /> e. routing<br /> f. URL rewriting</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>52. Can you do canary deployment with plain kubernetes?</strong></span></p>
+<p>Answer: Yes . it is ugly. You make 2 services taregtting different labels. Pods will have those different "tags".</p>
+<p><br /><span style="font-size: small;"><strong>53. Can Istio do canary release?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>54. Does Istio have a control pane?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>55. In which namespace does the control pane live?</strong></span></p>
+<p>Answer: Istio-system</p>
+<p><br /><span style="font-size: small;"><strong>56. Can you use Istio to encrypt traffic between micro-services ?</strong></span></p>
+<p>Answer: Yes</p>
+<p><br /><span style="font-size: small;"><strong>57. Name one advantage of Istio in terms retries?</strong></span></p>
+<p>Answer:</p>
+<p>if Microservice A calls Microservice B. You will have to incorporate retry login for this call in your app. Same for every single MS to MS communications.<br /> Istio can do this for you.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>58. With Istio, how can you prevent man in the middle attack?</strong></span></p>
+<p>Answer: My using encryption between microservices</p>
+<p><br /><span style="font-size: small;"><strong>59. What is the difference between a micro-service and kubernetes service?</strong></span></p>
+<p>Answer: micro-service is a generic term for a "piece" of an application. A Kubernetes service is a front for a bunch of pods doing the same thing.<br /> However, in real-life, often a micro-service is implemented as a Kubernetes service.</p>
+<p><br /><span style="font-size: small;"><strong>60. What is mutual TLS?</strong></span></p>
+<p>Answer: In a normal browset:web-server relationship, browser verifies the server using SSL/TLS. But Istio is capable of doing TLS both ways between micro-services. This is called mutual TLS</p>
+<p><br /><span style="font-size: small;"><strong>61. If Micro-Service A calls Micro-Service B, but not the other way around , which service should implement circut breaker?</strong></span></p>
+<p>Answer: A</p>
+<p><br /><span style="font-size: small;"><strong>62. Why would you need a circuit-breaker?</strong></span></p>
+<p>Answer: To avoid casdaing failure.</p>
+<p>Let's say Micro-service A calls Micro-Service B and Micro-Service B calls Micro-Service C.<br /> A ----&gt; B ----&gt; C</p>
+<p>For example, if Micro-service C (called) has issues and can't server Micro-service B (caller) would have problems servicing Micro-service A. Then Micro-service A Fails, as well. To avoid this cascading failure, A and B should implement circuit-breaker.</p>
+<p><br /><span style="font-size: small;"><strong>63. What does Jaeger add-on do?</strong></span></p>
+<p>Answer: Distributed Tracing</p>
+<p><br /><span style="font-size: small;"><strong>64. What are Istio profiles?</strong></span></p>
+<p>Answer: Although this feature has been becoming less and less relevant, profiles dictates what parts of Istio gets installed when you install Istio.</p>
+<p><br /><span style="font-size: small;"><strong>65. How does Kiali show "encrypted" communication between Microservices?</strong></span></p>
+<p>Answer: You see a lock just like you see next to URL on your browser</p>
+<p><br /><span style="font-size: small;"><strong>66. Why are companies shying away from Istio in prod at this point (Q1 2021)?</strong></span></p>
+<p>Answer: It is still beta. For example, Upgrading Istio version (when already is use) is not a reliable process.</p>
+<p><br /><span style="font-size: small;"><strong>67. Can you use Istio to make one of your Micro-Service response with an artificial delay?</strong></span></p>
+<p>Answer: Amazingly, YES. This is one type of Fault Injection that Istio Supports.</p>
+<p><br /><span style="font-size: small;"><strong>68. Sometimes we hear the term Telemetry when it comes Istio and/or Kubernetes. What is Telemetry in this context?</strong></span></p>
+<p>Answer: Within Istio and Kubernetes, there are ways to look into myriad of metrics that helps us understand what is really happening inside our cluster. These metrics make up "Telemetry"</p>
+<p><br /><span style="font-size: small;"><strong>69. You already have a Kubernetes Service in you Cluster. You also have Istio installed. What is an easy way to get an YAML for a VirtualService (that does not yet exist) that points to your existing Kubernetes Service?</strong></span></p>
+<p>Answer:</p>
+<p>In Kiali, find the service that you are interested in. <br /> Right Click on the service.<br /> Show details<br /> Actions<br /> Suspend Traffic<br /> Create<br /> Click on YAML Tab.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>70. When you install Istio, how does Istio know which namespaces are fair-game to install proxies into?</strong></span></p>
+<p>Answer: Namesspaces that have a label Istio-injeection=enabled will get the proxies.</p>
+<p><br /><span style="font-size: small;"><strong>71. In Istio, What is a Gateway?</strong></span></p>
+<p>Answer: It is Load Balancer that sits on the edge and handles incoming and outgoing traffic.</p>
+<p><br /><span style="font-size: small;"><strong>72. How to you control traffic coming in and going out of a VirtualService?</strong></span></p>
+<p>Answer: Attach it to Gateway (Which is a Load Balancer)</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>73. You are defining a "Gateway" using a YAML file. How do you let this Gateway accept traffic multiple ports (e.g. 80,443,1443)</strong></span></p>
+<p>Answer: Just like any other kubernetes YAML file, you would have a "list" by having multiple lines that start with dash.</p>
+<p>For example:</p>
+<p>- port:<br /> number:80<br /> name: http<br /> protocol: HTTP<br /> hosts:<br /> - "*"<br /> - port:<br /> number: 443<br /> name: SSL<br /> protocol: HTTPS<br /> hosts:<br /> - "*"</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>74. What is Kiali used for in Istio?</strong></span></p>
+<p>Answer: Its the graphical interface showing traffic between micro-services in real time (plus more) allowing real-time fault finding easy.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>75. Is Istio application-aware?</strong></span></p>
+<p>Answer: Yes, to some-extent</p>
+<p><br /><span style="font-size: small;"><strong>76. Can you explain what is a service-mesh?</strong></span></p>
+<p>Answer: From 20,000 feet view, a service-mesh is an abstraction layer on top of all services/micro-services that run on Kubernetes. This helps us do many things with interc-connected Kubernetes services that would be extremely "manual" or outright impossible. For example, Canary deployment, or time-out or circuit-breaking.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>77. What is important about Google backing Istio?</strong></span></p>
+<p>Answer: Kubernetes was made by google.</p>
+<p><br /><span style="font-size: small;"><strong>78. You have defined several Routing Rules. Which will take precedence?</strong></span></p>
+<p>Answer: They are evaluated in order (top to bottom)</p>
+<p><br /><span style="font-size: small;"><strong>79. Scenario: You have version 1 of your microservice hosted on Kubernetes Service foo. You have version 2 of your microservice hosted on Kubernetes Service bar. You want to send 10% of incoming traffic to Service bar. What you be simple Istio Solution without using Flagger.</strong></span></p>
+<p>&nbsp;</p>
+<p>Answer: Define a Virtual Service which has two destinations (foo and bar). Give "foo" 90% weight and "bar" 10% weight.</p>
+<p><br /><span style="font-size: small;"><strong>80. Istio's VirtualService is pretty darn good at devising routing policies to match just about any scenarios. Why then we still need "Gateways" ?</strong></span></p>
+<p>&nbsp;</p>
+<p>Answer: Gateways live on the "edge" of your mesh. This allows it to manage incoming traffic.</p>
+<p><br /><span style="font-size: small;"><strong>81. Which takes effect first? Routing Rules or Destination Rules?</strong></span></p>
+<p>Answer: Destination Rules come AFTER Routing Decisions have already been made.</p>
+<p><br /><span style="font-size: small;"><strong>82. Given that the functional testing of new feature is difficult to be tested automatically, can you think of couple of alternative tests you can run on your micro-service in an automated fashion?</strong></span></p>
+<p>Answer: Two relatively easy tests that can automated are: Error rate and Latency. By comparing these metrics before and after a Canary Release, you can get some confidence in your ability to evalute how the Canary deployment went.</p>
+<p><br /><span style="font-size: small;"><strong>83. Imagine that you have magic tool that is able to deploy Canary deployments bit by bit (10%, 20%, 30% and onwards) on your production cluster automatically. What is the pre-requisite for this tool to succeed?</strong></span></p>
+<p><br /> Answer: Tool must have an automated way to check the health of the services (e.g. error rate or latency) at every stage. This will allow it to make the right decision (go forward or rollback). By the way, such a tool exists. It's called Flagger and it is open source.</p>
+<p><br /><span style="font-size: small;"><strong>84. Is the side-car pattern the only way to implement service-mesh?</strong></span></p>
+<p><br /> Answer: No. Client-side Libraries (e.g. Hysterix ) can also be used. In that case, these libraries perform same function as the data plane of Istio. Netflix is a good example of a company who has adopted this approach.</p>
+<p><br /><strong><span style="font-size: small;">85. What is CRD and how does that relate to Istio?</span></strong></p>
+<p>Answer: CRD Stands for Custom Resource Definitions. Just Kubernetes creates "objects" using declarative YAML files, Istio creates its own objects using YAML such as VirtualService and DestinationRule.</p>
+<p><br /><span style="font-size: small;"><strong>86. What is Strangler Pattern and how does it relate to Istio?</strong></span></p>
+<p><br /> Answer: A great explanation is give here. https://martinfowler.com/bliki/StranglerFigApplication.html</p>
+<p><br /> In summary, you chip away at the monolith until you have replaced all of it using N endpoints or micro-services.<br /> In Istio, VirtualService helps you accomplish that.</p>
+<p><br /><span style="font-size: small;"><strong>87. What is a Service Entry in Istio?</strong></span></p>
+<p>Answer: Istio has an internal registry of services. Each item in this registry has a way reach that service. Each item in the Service Registry is a Service Entry.</p>
+<p><br /><span style="font-size: small;"><strong>88. Why would you need Service Entries in Istio Service Registry when Istio and Kubernetes are already aware of their services?</strong></span></p>
+<p>Answer: Mostly the service registry is a place to have definitions of services outside the Istio and Kubernetes. This allows service within Istio to easily reach out to those extrenal services (define once, use many times).</p>
+<p><br /><span style="font-size: small;"><strong>89. What would a good example use case of a Service Entry?</strong></span></p>
+<p><br /> Answer: For example, If multiple services within your Kubernetes Cluster are reaching out to an external service that requires mTLS, Istio's service entry can be used as a proxy. This would nullify the need to configure mTLS on every single service within your cluster. You would just configure it once.</p>
+<p><br /><span style="font-size: small;"><strong>90. Can you modify the configurations of the side-car proxies that get injected into all prods by Istio?</strong></span></p>
+<p>Answer: Yes. By default, side-car proxy grabs everything and allows all traffic in and out of pods. This behavior can be changed by hand.</p>
+<p><br /><span style="font-size: small;"><strong>91. Once you install Istio in your cluster, how do you know if it is running?</strong></span></p>
+<p>Answer: You can look for the Istio pods using the following command:</p>
+<p>kubectl get pods -n Istio-system</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>92. Scenario: You have a YAML file that can deploy your APPLICATION pods. These pods go into "foo" namespace. The foo namespace has Istio-enabled turned on. Is this enough for your application to be monitored/covered by Istio?</strong></span></p>
+<p>Answer: No! Istio does not auto-enforce proxies in to any pods.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>93. Scenario: You have a YAML file (foo-app.yaml) that can deploy your APPLICATION pods. These pods go into "foo" namespace. The foo namespace has Istio-enabled turned on. What do you have to do to have your application be Istio-managed as soon as you deploy.</strong></span></p>
+<p>Answer: Use Istio's kube-inject feature to your YAML file BEFORE deploying. For example:</p>
+<p>Istioctl kube-inject -f foo-app.yaml &gt; foo-app-with-Istio.yaml<br /> kubectl apply -f foo-app-with-Istio.yaml</p>
+<p><br /><span style="font-size: small;"><strong>94. If you have a virtualservice named foo, how do you get it's configuration?</strong></span></p>
+<p>Answer: kubetcl get vs foo -o yaml</p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: small;">95. If you have a Gateway named foo, how do you get it's configuration?</span></strong></p>
+<p>Answer: kubetcl get gw foo -o yaml</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>96. If you have a Istio Gateway, how do you figure out it's external IP so that you can access it?</strong></span></p>
+<p>Answer: Under the hood, the Istio Gateway is using kubernetes service. If you describe that service (kubectl get svc service_name) , you will see what kind of a Load Balancer. It is using and it's IP. For example, in AWS, it will be a ALB/NLB/ELB.</p>
+<p><br /><span style="font-size: small;"><strong>97. Which UI let's you gives you the chance to distributed tracing to see traffic flow of the requests to your application?</strong></span></p>
+<p>Answer: Zipkin UI</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>98. How do you access Zipkin UI?</strong></span></p>
+<p>Answer: You have to port-forward to zipkin pod</p>
+<p>&nbsp;</p>
+<p><span style="font-size: small;"><strong>99. If you want to send 25% traffic to application version 1 (pods with label v1) and 75% to application version 2 (pods with label v2), which object do you use? Gateway, VirtualService or DestinationRule?</strong></span></p>
+<p>Answer: VirtualService</p>
+<p><br /><span style="font-size: small;"><strong>100. What is the mechanism that Istio provides that allows us to authenticate users to a service?</strong></span></p>
+<p>Answer: This is called Origin Authentication. This is done using JWT Tokens.</p>
+<p>&nbsp;</p>
+<p><span><strong><br class="Apple-interchange-newline" />By Mamun Rashid</strong></span></p>
+<p><span><strong>Linkedin: https://www.linkedin.com/in/mamunrashid/</strong></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

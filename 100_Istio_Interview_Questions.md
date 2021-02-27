@@ -9,13 +9,13 @@
 ###                       Last Updated: 02.22.2021
 
 
-1. Why do we need Istio for time-outs, retries and circuit-breakers? 
+#### 1. Why do we need Istio for time-outs, retries and circuit-breakers? 
 
   Answer: Without Istio (or some other service-mesh solution) , we would have to code these things in EVERY micro-service. If we have 200 micro-services, we would have to
        make sure that every single micro-service has these built-in.
 
 
-2.  Scenario Question: You have version 0.1 and 0.2 of an app running as two different Kubernetes Servcies. In Istio, what do you have to do, to send 90% of the traffic to version 0.1
+#### 2.  Scenario Question: You have version 0.1 and 0.2 of an app running as two different Kubernetes Servcies. In Istio, what do you have to do, to send 90% of the traffic to version 0.1
     and 10% to version 0.2 (Basically a Canary set up)?
 
   Answer: Define a VirtualService that has 2 destination rules. In the YAML, you can specify what percentage of traffic goes where.

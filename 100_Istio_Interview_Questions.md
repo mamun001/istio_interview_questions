@@ -42,8 +42,7 @@
            two different destinations (e.g. host)
 
 
-#### 6. Scenario: You have a monolith. You want to chip away at this monolith slowly. You define a microservice A that handles a small part of monolithic service, while letting REST 
-     of monolith be as is. How can Istio help you in this situation?
+#### 6. Scenario: You have a monolith. You want to chip away at this monolith slowly. You define a microservice A that handles a small part of monolithic service, while letting REST of monolith be as is. How can Istio help you in this situation?
 
    Answer: 1. Define ONE big VirtualService that points to the monolith.
            2. Create a microservice (a service in Kubernetes) that handles a small part of the monolith

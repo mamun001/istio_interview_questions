@@ -45,7 +45,8 @@
 ##
 #### 6. Scenario: You have a monolith. You want to chip away at this monolith slowly. You define a microservice A that handles a small part of monolithic service, while letting REST of monolith be as is. How can Istio help you in this situation?
 
-######   Answer: 1. Define ONE big VirtualService that points to the monolith.
+######   Answer: 
+######           1. Define ONE big VirtualService that points to the monolith.
 ######           2. Create a microservice (a service in Kubernetes) that handles a small part of the monolith
 ######           3. Now, edit the VirtualService to add the new microservice that handles the relevant requests (e.g. a REST path) 
 ######           4. Now, users still hit same the VirtualService and yet , behind the scene, Istio forwards ONLY the relevant requests to the brand new micro-service.
@@ -423,50 +424,61 @@
    Answer: You see a lock just like you see next to URL on your browser
 
 
+##
 #### 66.  Why are companies shying away from Istio in prod at this point (2021)
 
   Answer: It is still beta. For example, Upgrading Istio version (when already is use) is not a reliable process.
 
 
+##
 #### 67.  Can you use Istio to make one of your Micro-Service response with an artificial delay?
 
   Answer: Amazingly, YES. This is one type of Fault Injection that Istio Supports.
 
 
+##
 #### 68.  Sometimes we hear the term Telemetry when it comes Istio and/or Kubernetes. What is Telemetry in this context?
 
   Answer: Within Istio and Kubernetes, there are ways to look into myriad of metrics that helps us understand what is really happening inside our cluster. These metrics make up "Telemetry" 
 
 
+##
 #### 69.  You already have a Kubernetes Service in you Cluster. You also have Istio installed. What is an easy way to get an YAML for a VirtualService (that does not yet exist) that points to your existing Kubernetes Service?
 
-  Answer: In Kiali, find the service that you are interested in. 
-          Right Click on the service.
-          Show details
-          Actions
-          Suspend Traffic
-          Create
-          Click on YAML Tab.
+######  Answer: 
+######          In Kiali, find the service that you are interested in. 
+######          Right Click on the service.
+######          Show details
+######          Actions
+######          Suspend Traffic
+######          Create
+######          Click on YAML Tab.
 
+
+##
 #### 70. When you install Istio, how does Istio know which namespaces are fair-game to install proxies into?
 
   Answer: Namesspaces that have a label Istio-injeection=enabled will get the proxies.
 
 
+##
 #### 71. In Istio, What is a Gateway?
 
   Answer: It is Load Balancer that sits on the edge and handles incoming and outgoing traffic.
 
 
+##
 #### 72. How to you control traffic coming in and going out of a VirtualService?
 
   Answer: Attach it to Gateway (Which is a Load Balancer)
 
 
-
+##
 #### 73. You are defining a "Gateway" using a YAML file. How do you let this Gateway accept traffic multiple ports (e.g. 80,443,1443)
 
- Answer: Just like any other kubernetes YAML file, you would have a "list" by having multiple lines that start with dash.
+ Answer: 
+
+   Just like any other kubernetes YAML file, you would have a "list" by having multiple lines that start with dash.
 
    For example:
 
@@ -483,56 +495,65 @@
     hosts:
     - "*"
 
+
+##
 #### 74. What is Kiali used  for in Istio?
 
    Answer: Its the graphical interface showing traffic between micro-services in real time (plus more) allowing real-time fault finding easy.
 
 
-
+##
 #### 75.  Is Istio application-aware?
 
   Answer: Yes, to some-extent
 
 
+##
 #### 76. Can you explain what is a service-mesh?
 
   Answer: From 20,000 feet view, a service-mesh is an abstraction layer on top of all services/micro-services that run on Kubernetes. This helps us do many things with interc-connected
        Kubernetes services that would be extremely "manual" or outright impossible. For example, Canary deployment, or time-out or circuit-breaking.
 
 
-
+##
 #### 77.  What is important about Google backing Istio?
 
   Answer: Kubernetes was made by google.
 
 
+##
 #### 78. You have defined several Routing Rules. Which will take precedence?
 
    Answer: They are evaluated in order (top to bottom)
 
 
+##
 #### 79. Scenario: You have version 1 of your microservice hosted on Kubernetes Service foo. You have version 2 of your microservice hosted on Kubernetes Service bar. You want to send 10% of 
      incoming traffic to Service bar. What you be simple Istio Solution without using Flagger.
 
    Answer: Define a Virtual Service which has two destinations (foo and bar). Give "foo" 90% weight and "bar" 10% weight.
 
 
+
+##
 #### 80. Istio's VirtualService is pretty darn good at devising routing policies to match just about any scenarios. Why then we still need "Gateways" ?
 
    Answer: Gateways live on the "edge" of your mesh. This allows it to manage incoming traffic.
 
 
+##
 #### 81. Which takes effect first? Routing Rules or Destination Rules?
 
   Answer: Destination Rules come AFTER Routing Decisions have already been made.
 
 
+##
 #### 82. Given that the functional testing of new feature is difficult to be tested automatically, can you think of couple of alternative tests you can run on your micro-service in an automated fashion?
 
-  Answer: Two relatively easy tests that can automated are: Error rate and Latency. By comparing these metrics before and after a Canary Release, you can get some confidence in your ability
-          to evalute how the Canary deployment went.
+  Answer: Two relatively easy tests that can automated are: Error rate and Latency. By comparing these metrics before and after a Canary Release, you can get some confidence in your ability to evalute how the Canary deployment went.
 
 
+##
 #### 83. Imagine that you have magic tool that is able to deploy Canary deployments bit by bit (10%, 20%, 30% and onwards) on your production cluster automatically. What is the pre-requisite
     for this tool to succeed?
 
@@ -540,37 +561,45 @@
   Answer: Tool must have an automated way to check the health of the services (e.g. error rate or latency) at every stage. This will allow it to make the right decision (go forward or rollback).  By the way, such a tool exists. It's called Flagger and it is open source. 
 
 
+##
 #### 84. Is the side-car pattern the only way to implement service-mesh?
 
 
+##
   Answer: No. Client-side Libraries (e.g. Hysterix ) can also be used. In that case, these libraries perform same function as the data plane of Istio. Netflix is a good example of a company who has adopted this approach.
 
 
+##
 #### 85. What is CRD and how does that relate to Istio?
 
   Answer: CRD Stands for Custom Resource Definitions. Just Kubernetes creates "objects" using declarative YAML files, Istio creates its own objects using YAML such as VirtualService and DestinationRule.
 
 
+##
 #### 86. What is Strangler Pattern and how does it relate to Istio?
 
 
-  Answer: A great explanation is give here.
-          https://martinfowler.com/bliki/StranglerFigApplication.html
-          In summary, you chip away at the monolith until you have replaced all of it using N endpoints or micro-services.
-          In Istio, VirtualService helps you accomplish that. 
+######  Answer: 
+######          A great explanation is give here.
+######          https://martinfowler.com/bliki/StranglerFigApplication.html
+######          In summary, you chip away at the monolith until you have replaced all of it using N endpoints or micro-services.
+######          In Istio, VirtualService helps you accomplish that. 
 
 
+##
 #### 87. What is a Service Entry in Istio?
 
   Answer: Istio has an internal registry of services. Each item in this registry has a way reach that service. Each item in the Service Registry is a Service Entry.
 
 
+##
 #### 88. Why would you need Service Entries in Istio Service Registry when Istio and Kubernetes are already aware of their services?
 
  Answer: Mostly the service registry is a place to have definitions of services outside the Istio and Kubernetes. This allows service within Istio to easily reach out to those extrenal
          services (define once, use many times).
 
 
+##
 #### 89. What would a good example use case of a Service Entry?
 
 
@@ -578,6 +607,7 @@
           as a proxy. This would nullify the need to configure mTLS on every single service within your cluster. You would just configure it once.
 
 
+##
 #### 90. Can you modify the configurations of the side-car proxies that get injected into all prods by Istio?
 
   Answer: Yes. By default, side-car proxy grabs everything and allows all traffic in and out of pods. This behavior can be changed by hand.

@@ -246,66 +246,82 @@
    Answer: If a request hops from point A to B to C to D,  AB , BC and CD are Spans.
 
 
+##
 #### 39.  Jaeger is basically what looking for tracable requests ?
 
    Answer: Search Engine
 
 
+##
 #### 40.  Can you name some of the features of Istiod (formerly known as Pilot)?
 
    Answer: Routing  +  timeout,retries,circuit-breakers,load-balancing,fault-injection
 
 
+##
 #### 41.  What does flagger do?
 
   Answer: promotes canary based on metrics , little by little (10% --> 20% --> etc) and rolls back if metrics don't look good.
 
 
+##
 #### 42.  Can you name another service-mesh besides Istio?
 
   Answer: Linkerd
 
 
+##
 #### 43.   How to install Istio ? 
 
   Answer: Version 1.9 (2021) curl down the Istioctl and then use Istioctl to install Istio
 
 
+##
 #### 44.  What manages certificates in Istio?
 
     Answer: CA (Certificate Authority)
 
 
+##
 #### 45.  What is Citadel?
 
   Answer: Old name of CA:
 
 
+##
 #### 46.  Envoy , sidecar proxy, gets its routing and configuration from __________ :
 
    Answer: Pilot/Istiod
 
+
+##
 #### 47.  What is this "Mixer" thing in Istio?
 
 
-   Answer: source:  https://Istio-releases.github.io/v0.1/docs/concepts/policy-and-control/mixer.html
-        Mixer provides a generic intermediation layer between application code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having application code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
+######   Answer: 
+######   source:  https://Istio-releases.github.io/v0.1/docs/concepts/policy-and-control/mixer.html
+######        Mixer provides a generic intermediation layer between application code and infrastructure backends. Its design moves policy decisions out of the app layer and into configuration instead, under operator control. Instead of having application code integrate with specific backends, the app code instead does a fairly simple integration with Mixer, and Mixer takes responsibility for interfacing with the backend systems.
 
 
+##
 #### 48.  Which 3 Core Services does MIXER provide?
 
   Answer:  Pre-condition Checking, Quota Management, Telemetry Reporting
 
 
+##
 #### 49.  Envoy gets certificates from ________________
 
    Answer: CA (Formerly named Citadel)
 
 
+##
 #### 50.   Does Istio has both ingress and egress controllers?
 
    Answer: True
 
+
+##
 #### 51.  How is Istio's VirtualServices different than a normal k8s service:
 
   Answer: Has additional features such as:
@@ -317,80 +333,91 @@
        f. URL rewriting
 
 
-
+##
 #### 52.   Can you do canary deployment with plain kubernetes?
 
   Answer: Yes . it is ugly. You make 2 services taregtting different labels. Pods will have those different "tags".
 
 
+##
 #### 53.  Can Istio do canary release?
 
   Answer: Yes
 
 
+##
 #### 54.  Does Istio have a control pane?
 
   Answer: Yes
 
-
+##
 #### 55.  In which namespace does the control pane live?
 
   Answer: Istio-system
 
 
+##
 #### 56.  Can you use Istio to encrypt traffic between micro-services ?
 
   Answer: Yes
 
 
+##
 #### 57.  Name one advantage of Istion in terms retries?
 
   Answer: if MS A calls MS B. You will have to incorporate retry login for this call in your app. Same for every single MS to MS communications.
        Istio can do this for you.
 
+
+##
 #### 58. With Istio, how can you prevent man in the middle attack?
 
   Answer: My using encryption between microservices
 
-
+##
 #### 59. What is the difference between a micro-service and kubernetes service?
 
-  Answer: micro-service is a generic term for a "piece" of an application. A Kubernetes service is a front for a bunch of pods doing the same thing.
-       However, in real-life, often a micro-service is implemented as a Kubernetes service.
+  Answer: micro-service is a generic term for a "piece" of an application. A Kubernetes service is a front for a bunch of pods doing the same thing.  However, in real-life, often a micro-service is implemented as a Kubernetes service.
 
 
+##
 #### 60.  What is mutual TLS?
 
   Answer: In a normal browset:web-server relationship, browser verifies the server using SSL/TLS. But Istio is capable of doing TLS both ways between micro-services.
        This is called mutual TLS
 
 
+##
 #### 61.  If Micro-Service A calls Micro-Service B, but not the other way around , which service should implement circut breaker?
 
   Answer: A
 
 
+##
 #### 62.  Why would you need a circuit-breaker?
 
-  Answer:  To avoid casdaing failure.
+######  Answer:  To avoid casdaing failure.
+######
+######        Let's say Micro-service A calls Micro-Service B and Micro-Service B calls Micro-Service C.
+######         A  ---->   B   ---->  C
+######
+######        For example, if Micro-service C (called) has issues and can't server Micro-service B (caller) would have problems servicing  Micro-service A. Then Micro-service A 
+######        Fails, as well.  To avoid this cascading failure, A and B should implement circuit-breaker.
 
-        Let's say Micro-service A calls Micro-Service B and Micro-Service B calls Micro-Service C.
-         A  ---->   B   ---->  C
 
-        For example, if Micro-service C (called) has issues and can't server Micro-service B (caller) would have problems servicing  Micro-service A. Then Micro-service A 
-        Fails, as well.  To avoid this cascading failure, A and B should implement circuit-breaker.
-
-
+##
 #### 63.  What does Jaeger add-on do?
 
    Answer: Distributed Tracing
 
 
+##
 #### 64.  What are Istio profiles?
 
   Answer: Although this feature has been becoming less and less relevant, profiles dictates what parts of Istio gets installed when you install Istio.
 
 
+##
 #### 65.  How does Kiali show "encrypted" communication between MSs?
 
    Answer: You see a lock just like you see next to URL on your browser

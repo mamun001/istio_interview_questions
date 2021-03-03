@@ -31,18 +31,18 @@
   is from OUTSIDE the cluster.  In this case, we need an Ingress Gateway on the "edge" (i.e. "front gate"). That is exactly what Istio Ingress Gateway is. This "Istio Ingress 
   Gateway" has the ability to split incoming traffic and send them to different services at any chosen ratio.
 
-
+##
 #### 4. Scenario: You need to route traffic based on some criteria. For example, if the sender has a cookie set, send traffic to destination A. Or, if the URI has certain prefix, send traffic to destionation B. How do you accomplish this in Isto?
 
    Answer: Define a Gateway that TWO "match" sections. Each "match" section would implement a criteria-> destination.
 
-
+##
 #### 5. Scenario: For the example criteria match (e.g. incoming traffic URI has a particular prefix), you want to SPLIT the traffic to TWO different destinations.  How do you implement this scenario in Istio?
 
    Answer: Make a Gateway. In the YAML definition of the Gateway, define a criteria in the "match" section. THEN, in the "route" section for that match, simply define
            two different destinations (e.g. host)
 
-
+##
 #### 6. Scenario: You have a monolith. You want to chip away at this monolith slowly. You define a microservice A that handles a small part of monolithic service, while letting REST of monolith be as is. How can Istio help you in this situation?
 
    Answer: 1. Define ONE big VirtualService that points to the monolith.
@@ -52,6 +52,7 @@
            5. You can continue steps 2-4 for each small piece that you chip away from the monolith until the entire monolith has been converted to N micro-services.
 
 
+##
 #### 7. The "hosts" field in the definitions of VirtualService and Gateway is very powerful. Why?
 
    Answer: It represents the client's destionation. However, Istio allows this to take many forms, such as:
@@ -63,157 +64,183 @@
          and many more.
 
 
+##
 #### 8. How does Istio help with security?
 
    Answer: Istio can encrypt microservice to microservice traffic very easily
 
 
+##
 #### 9.  What core "thing" makes Istio possible?
 
    Answer: It puts an envoy proxy in each pod. This makees everything else in Istio possible.
 
 
+##
 #### 10. Can you name some of the add-ons for Istio?
 
    Answer: Kiali, jaeger, Grafana, Prometheus, Zipkin, Cert-Manager
 
 
+##
 #### 11. Can you think of a tool that helps us automate canary deployments on Kubernetes via Istio?
 
    Answer: Falgger  (open-source)
 
 
+##
 #### 12.  How do you access kiali, once instaleled?
 
   Answer: Just port forward to kali pod 20001
 
 
+##
 #### 13.  How does Istio does what it does?
 
   Answer: It installs sidecars along with application containers ("envoys") that intercepts and proxys traffic.
 
 
+##
 #### 14.   Is there such a thing as "Istio Ingress Controller"
 
     Answer: Yes. Istio supports standard Kubernetes Ingress specification without annotations
 
 
+##
 #### 15.  What does Istio install automatically in each pod ?
 
     Answer: Envoy
 
-
+##
 #### 16.  Can Istio do API Management at the edge?
 
  Answer: Yes
 
 
+##
 #### 17.   What is Istio routing?
 
-  Answer: You can use Istio to send 60% traffic to version 1 of a microservice and 40% to version 2.
-       You can also route traffic based on conditions.
+  Answer: You can use Istio to send 60% traffic to version 1 of a microservice and 40% to version 2.  You can also route traffic based on conditions.
 
 
+##
 #### 18.  In terms of help with Micro-Service development, does Istio support retry?
 
   Answer: Yes
 
-
+##
 #### 19.  In terms of help with Micro-Service development, does Istio support time-out?
 
   Answer: Yes
 
-
+##
 #### 20.  In terms of help with Micro-Service development, does Istio support circuit-breakers?
 
   Answer: Yes
 
 
-
+##
 #### 21.  Can microservice to microservice communication "leave the building" ??
 
    Answer: Yes.  This is why you need encryption between microservices.
 
 
+##
 #### 22.  In terms of help with Micro-service development, does Istio support Load Balancing?
 
   Answer: Yes
 
 
+##
 #### 23.  In terms of help with Micro-service development, does Istio support Fault Injection for testing?
 
   Answer: Yes
 
-
+##
 #### 24.  Does Istio support redirect?
 
   Answer: Yes
 
-
+##
 #### 25.  Does Istio support re-write?
 
   Answer: Yes. (re-writes paths on the fly)
 
 
+##
 #### 26.  What is Istio re-write?
 
   Answer: Istio can changes the header of the incoming requests. e.g. /foo/bar/a  TO /a
 
-
+##
 #### 27.  Can you name couple of reporting features of Istio?
 
  Answer:  1. Telemetry 2. Distributed Tracing and 3. Logging
 
 
+##
 #### 28. Does iatio have policy enforcement feature?
 
  Answer: yes
 
 
+##
 #### 29.  Can you do dark releases using Istio (to your PRODUCTION environment)? 
 
   Answer: YES!
 
 
+##
 #### 30.  Can you name one way you can deploy dark release into your PRODUCTION Environment using Istio?
 
   Answer: Istio can re-direct traffic based on headers. You can have a micro-service (or a new version of it) that responds only when the HEADER is present.
        You, as a tester (or an automated testing application) can send a request with the added header and Istio will re-direct those to the new version of the Micro-Service.
 
 
+##
 #### 31.  In Istio, how can you suspend traffic between Micro-Service A and B?
 
   Answer: In Kiali GUI, you can "suspend" traffic between services using mouse-clicks.
 
 
+##
 #### 32.  What is a named subset and how does that fit into the big picture?
 
   Answer: Named subset is an endpoint. Endpoint, for example, can be pods with certain labels.
        Destination Rules has Named Subsets. So, in the big picture, Named Subsets are where traffic end up after all said and done.
 
+
+##
 #### 33. Name one of the new k8s object that Istio creates:
 
   Answer: virtualservice and destinationrules
 
 
+##
 #### 34.  Which Istio feature allows us to track a single request?
 
    Answer: Distributed Tracing
 
 
+##
 #### 35.  Let's say you have Flagger deploy canary to your environment. But, this is just for demo and there is no traffic coming in. What will Flagger do?
 
    Answer: It will think that Canary Deployment has failed and it will roll back.
 
+
+##
 #### 36.  Name one distrubuted tracing framework that comes with Istio:
 
    Answer: Jaeger
 
+
+##
 #### 37.  In Distribute Tracing  ONE Trace has multiple ______________(s):
 
    Answer: span
 
 
+##
 #### 38.  What exactly is a "span" in a Trace?
 
    Answer: If a request hops from point A to B to C to D,  AB , BC and CD are Spans.

@@ -15,8 +15,7 @@
        make sure that every single micro-service has these built-in.
 
 
-#### 2.  Scenario Question: You have version 0.1 and 0.2 of an app running as two different Kubernetes Servcies. In Istio, what do you have to do, to send 90% of the traffic to version 0.1
-    and 10% to version 0.2 (Basically a Canary set up)?
+#### 2.  Scenario Question: You have version 0.1 and 0.2 of an app running as two different Kubernetes Servcies. In Istio, what do you have to do, to send 90% of the traffic to version 0.1 and 10% to version 0.2 (Basically a Canary set up)?
 
   Answer: Define a VirtualService that has 2 destination rules. In the YAML, you can specify what percentage of traffic goes where.
 
@@ -29,14 +28,12 @@
   Gateway" has the ability to split incoming traffic and send them to different services at any chosen ratio.
 
 
-#### 4. Scenario: You need to route traffic based on some criteria. For example, if the sender has a cookie set, send traffic to destination A. Or, if the URI has
-     certain prefix, send traffic to destionation B. How do you accomplish this in Isto?
+#### 4. Scenario: You need to route traffic based on some criteria. For example, if the sender has a cookie set, send traffic to destination A. Or, if the URI has certain prefix, send traffic to destionation B. How do you accomplish this in Isto?
 
    Answer: Define a Gateway that TWO "match" sections. Each "match" section would implement a criteria-> destination.
 
 
-#### 5. Scenario: For the example criteria match (e.g. incoming traffic URI has a particular prefix), you want to SPLIT the traffic to TWO different destinations.
-     How do you implement this scenario in Istio?
+#### 5. Scenario: For the example criteria match (e.g. incoming traffic URI has a particular prefix), you want to SPLIT the traffic to TWO different destinations.  How do you implement this scenario in Istio?
 
    Answer: Make a Gateway. In the YAML definition of the Gateway, define a criteria in the "match" section. THEN, in the "route" section for that match, simply define
            two different destinations (e.g. host)

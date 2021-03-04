@@ -6,7 +6,7 @@
 
 ###                       Linkedin:  https://www.linkedin.com/in/mamunrashid/
 
-###                       Last Updated: 02.22.2021
+###                       Last Updated: 03.03.2021
 
 
 ##
@@ -613,54 +613,68 @@
   Answer: Yes. By default, side-car proxy grabs everything and allows all traffic in and out of pods. This behavior can be changed by hand.
 
 
+##
 #### 91. Once you install Istio in your cluster, how do you know if it is running?
 
   Answer: You can look for the Istio pods using the following command:
 
           kubectl get pods -n Istio-system
 
+
+##
 #### 92. Scenario: You have a YAML file that can deploy your APPLICATION pods. These pods go into "foo" namespace. The foo namespace has Istio-enabled turned on. Is this enough for your
       application to be monitored/covered by Istio?
 
     Answer: No! Istio does not auto-enforce proxies in to any pods.
 
-#### 93. Scenario: You have a YAML file (foo-app.yaml) that can deploy your APPLICATION pods. These pods go into "foo" namespace. The foo namespace has Istio-enabled turned on. What do you have to do
-     to have your application be Istio-managed as soon as you deploy.
+##
+#### 93. Scenario: You have a YAML file (foo-app.yaml) that can deploy your APPLICATION pods. These pods go into "foo" namespace. The foo namespace has Istio-enabled turned on. What do you have to do to have your application be Istio-managed as soon as you deploy.
 
     Answer: Use Istio's kube-inject feature to your YAML file BEFORE deploying. For example:
 
     Istioctl kube-inject -f foo-app.yaml > foo-app-with-Istio.yaml
     kubectl apply -f foo-app-with-Istio.yaml
 
- 
+
+## 
 #### 94. If you have a virtualservice named foo, how do you get it's configuration?
 
   Answer: kubetcl get vs foo -o yaml
 
+
+##
 #### 95. If you have a Gateway named foo, how do you get it's configuration?
 
   Answer: kubetcl get gw foo -o yaml
 
+
+##
 #### 96. If you have a Istio Gateway, how do you figure out it's external IP so that you can access it?
 
   Answer: Under the hood, the Istio Gateway is using kubernetes service. If you describe that service (kubectl get svc service_name) , you will see what kind of a Load Balancer
           It is using and it's IP. For example, in AWS, it will be a ALB/NLB/ELB.
 
 
+##
 #### 97. Which UI let's you gives you the chance to distributed tracing to see traffic flow of the requests to your application?
 
   Answer: Zipkin UI
 
+
+##
 #### 98. How do you access Zipkin UI?
 
   Answer: You have to port-forward to zipkin pod
 
+
+##
 #### 99. If you want to send 25% traffic to application version 1 (pods with label v1) and 75% to application version 2 (pods with label v2), which object do you use?
     Gateway, VirtualService or DestinationRule?
 
   Answer: VirtualService
 
 
+##
 #### 100. What is the mechanism that Istio provides that allows us to authenticate users to a service?
 
   Answer: This is called Origin Authentication. This is done using JWT Tokens.
@@ -668,3 +682,8 @@
  
 
 
+###                       100 Istio Interview Questions
+
+####                       By Mamun Rashid
+
+###                       Linkedin:  https://www.linkedin.com/in/mamunrashid/
